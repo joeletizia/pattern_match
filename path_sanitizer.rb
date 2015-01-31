@@ -12,7 +12,6 @@ class PathSanitizer
 
   private
 
-
   attr_reader :paths
 
   def remove_leading_slashes(path)

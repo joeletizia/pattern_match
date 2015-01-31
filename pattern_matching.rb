@@ -1,31 +1,22 @@
-require 'pry'
 require_relative './pattern_matcher'
 require_relative './pattern_grader'
 require_relative './path_sanitizer'
-
-Readline.input = IO.new(IO.sysopen("/dev/tty", "r+"))
+require_relative './console_utility'
 
 input = STDIN.readlines
 
-number_of_patterns = input[0].to_i
-patterns = input[1..number_of_patterns].map(&:chomp)
-number_of_paths = input[number_of_patterns+1].to_i
-paths = input[number_of_patterns+2...input.length].map(&:chomp)
+console_utility = ConsoleUtility.new(input)
 
-paths = PathSanitizer.new(paths).sanitize
-
-paths.each do |path|
+console_utility.paths.each do |path|
   matcher = PatternMatcher.new(path)
 
   matches = []
 
-  patterns.each do |pattern|
+  console_utility.patterns.each do |pattern|
     matches << pattern if matcher.match?(pattern)
   end
 
-  if matches.any?
-    puts PatternGrader.new(path).best(matches)
-  else
-    puts "NO MATCH"
-  end
+  console_output = matches.any? ? PatternGrader.new(path).best(matches) : ConsoleUtility::NO_MATCH_FOUND_INDICATOR
+
+  puts console_output
 end
