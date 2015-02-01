@@ -56,3 +56,7 @@ As an example, the below is an example of proper input and output:
     NO MATCH
     foo,bar,baz
 
+
+## Analysis of Solution
+
+There are two variables at play, the number of patterns k and the number of paths n. The runtime of the program in the worst case is O(nk) because each path must be compared to each pattern. 
